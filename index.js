@@ -26,48 +26,67 @@ function saveToLocal(event) {
 
 	// Getting details from local storage
 	let getItems = JSON.parse(localStorage.getItem(des));
-	// window.addEventListener("DOMCONTENTLOADED", (getItems)=>{
-	// 	console.log(getUserList(getItems));
-	// })
+	
 	console.log(getItems);
 
 
 	getUserList(getItems);
+	// event.target.name.value='';
+	// event.target.des.value='';
+	// event.target.categ.value='';
 	
-	addEventListener
-
 	// Need to ask about refresh thing
 }
+window.addEventListener("DOMContentLoaded", ()=>{
+	const lcStObj=localStorage;
+	const lcStKey=Object.keys(lcStObj);
+	for (let index = 0; index < lcStKey.length; index++) {
+		const key=lcStKey[index];
+		const string=lcStObj[key];
+		const userListObj=JSON.parse(string);
+		console.log(userListObj);
+		
+		getUserList(userListObj);
+	}
 
+})
 
 
 
 function getUserList(user) {
+	document.getElementById('name').value='';
+	document.getElementById('des').value='';
+	document.getElementById('categ').value='';
+
     //taking any variable to store or access the ul or li tag and insert all the node we want
 	const userList = document.getElementById("userList");
 
 	//taking listArr variable to store all the nodes we have already in the list
-	const listArr = Object.values(user);
-
+	// const listArr = Object.values(user);
+	
 	//printing all the node we have
-	console.log(`listArr --> ${listArr}`);
+	// console.log(`listArr --> ${listArr}`);
+
+	const pntNode=document.getElementById('userList');
+
+	const childNode=`<li id=${user.des}>${user.name}-${user.des}-${user.categ} 
+	<button onclick=deleteUser("${user.des}")>DeleteUser</button>
+	<button onclick=editUser('${user.name}','${user.des}','${user.categ}')>EditUser</button>
+	</li>`;
+
+	pntNode.innerHTML=pntNode.innerHTML+childNode;
 
 	//creating the first node i.e li 
-	const li = document.createElement("li");
-
+	// const li = document.createElement("li");
 	//giving id to it so that we can access it
-	li.id=user.des;
-
+	// li.id=user.des;
 	//adding to the list of li tag with the appendChild function and creating node side by side
-	li.appendChild(document.createTextNode(`${user.name}-${user.des}-${user.categ}`));
-
+	// li.appendChild(document.createTextNode(`${user.name}-${user.des}-${user.categ}`));
     //li.appendChild(document.createTextNode(`<button onclick="deleteUser(${user.email})">Delete User</button>`));
-	li.innerHTML+=`<button onclick=deleteUser("${user.des}")>DeleteUser</button>`;
-
-	li.innerHTML+=`<button onclick=editUser('${user.name}','${user.des}','${user.categ}')>EditUser</button>`;
-
+	// li.innerHTML+=`<button onclick=deleteUser("${user.des}")>DeleteUser</button>`;
+	// li.innerHTML+=`<button onclick=editUser('${user.name}','${user.des}','${user.categ}')>EditUser</button>`;
 	// // const childHTML = `<li>${key}</li>`;
-	userList.appendChild(li);
+	// pntNode.appendChild(li);
 }
 
 function editUser(name,des,categ){
@@ -85,6 +104,7 @@ function deleteUser(des){
 }
 
 function removeSameUser(des){
+	console.log(des);
     const parentNode=document.getElementById('userList');
     const childNodeToBeDeleted=document.getElementById(des);
     if (childNodeToBeDeleted) {
